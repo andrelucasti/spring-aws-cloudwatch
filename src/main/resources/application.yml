@@ -1,0 +1,12 @@
+server:
+  port: 8929
+
+spring:
+  application:
+    name: "Spring Cloud CloudWatch"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
