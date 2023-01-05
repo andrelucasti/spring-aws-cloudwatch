@@ -3,10 +3,12 @@ COPY ./ ./
 
 RUN mvn clean install -DskipTests
 
-FROM amazoncorretto:19-alpine
+FROM amazoncorretto:19
 WORKDIR /usr/src/app
+RUN ls -la
+RUN pwd
 
-COPY --from=builder app/target/*.jar application.jar
+COPY --from=builder target/*.jar application.jar
 
 EXPOSE 9958
 EXPOSE 8929
