@@ -1,4 +1,7 @@
 name: Create the infrastructure in the AWS
+on:
+  workflow_dispatch:
+    
 
 env:
   AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
