@@ -6,12 +6,17 @@ on:
       - main
 
 env:
+  #AWS
   AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
   AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
   AWS_DEFAULT_REGION: ${{secrets.AWS_REGION}}
   AWS_ACCOUNT_ID: ${{secrets.AWS_ACCOUNT_ID}}
-  IMAGE_TAG: ${{ github.sha }}
   AWS_ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY }}
+  AWS_ECS_TASK_DEFINITION: .aws/task-definition.json
+  
+  #APP
+  APP_NAME: springboot-cloudwatch
+  IMAGE_TAG: ${{ github.sha }}
 
 
 jobs:
@@ -33,6 +38,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Build Image to ECR
+        id: build-image
         env:
           ECR_REGISTRY: ${{ steps.aws-ecr-login.outputs.registry }}
           ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY }}
@@ -41,7 +47,9 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
 
-        run: docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$ECR_IMAGE_TAG .
+        run: | 
+            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$ECR_IMAGE_TAG .
+            echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$ECR_IMAGE_TAG" >> $GITHUB_OUTPUT
 
       - name: Push Image to ECR
         env:
@@ -64,5 +72,22 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
+      
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{ env.AWS_ECS_TASK_DEFINITION }}
+          container-name: ${{ env.APP_NAME }}
+          image: ${{ steps.build-image.outputs.image }}
+      
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.APP_NAME }}
+          cluster: springboot-cloudwatch-cluster 
+
+
 
 
