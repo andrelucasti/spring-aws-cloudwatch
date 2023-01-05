@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 RUN ls -la
 RUN pwd
 
-COPY --from=builder target/*.jar application.jar
+COPY --from=builder target/application.jar application.jar
 
 EXPOSE 9958
 EXPOSE 8929
