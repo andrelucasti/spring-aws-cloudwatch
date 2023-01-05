@@ -19,7 +19,7 @@ public class InfrastructureApp {public static void main(final String[] args) {
                                       String accountId,
                                       String region) {
 
-        new InfrastructureStack(app, "wallet-manager-resource-stack",
+        new InfrastructureStack(app, "spring-cloud-cloudwatch-stack",
                 StackProps.builder().env(getEnv(accountId, region))
                         .build());
 
