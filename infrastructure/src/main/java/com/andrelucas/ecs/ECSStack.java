@@ -21,6 +21,10 @@ import software.constructs.Construct;
 
 public class ECSStack extends Stack {
 
+    private static final String APP_NAME = "springbootcloudwatch";
+    private static final String CLUSTER_NAME = "springboot-cloudwatch-cluster";
+    private static final String KEY_NAME = "springboot-cloudwatch-cluster";
+
     private final String repositoryName;
     public ECSStack(final Construct scope,
                     final String id,
@@ -39,7 +43,7 @@ public class ECSStack extends Stack {
                 .desiredCapacity(2)
                 .instanceType(InstanceType.of(InstanceClass.T2, InstanceSize.MICRO))
                 .machineImage(MachineImage.latestAmazonLinux())
-                .keyName("springboot-cloudwatch-cluster")
+                .keyName(KEY_NAME)
                 .allowAllOutbound(true)
                 .build();
 
@@ -48,13 +52,13 @@ public class ECSStack extends Stack {
                 .builder()
                 .image(ecrImage)
                 .enableLogging(true)
-                .containerName("springboot-cloudwatch")
+                .containerName(APP_NAME)
                 .containerPort(8929)
                 .build();
 
 
         Cluster cluster = Cluster.Builder.create(this, "ecs-cluster-stack")
-                .clusterName("springboot-cloudwatch-cluster")
+                .clusterName(CLUSTER_NAME)
                 .containerInsights(true)
                 .capacity(addCapacityOptions)
                 .enableFargateCapacityProviders(false)
@@ -65,7 +69,7 @@ public class ECSStack extends Stack {
                 .cluster(cluster)
                 .taskImageOptions(loadBalancedTaskImageOptions)
                 .publicLoadBalancer(true)
-                .serviceName("springboot-cloudwatch")
+                .serviceName(APP_NAME)
                 .build();
     }
 }
