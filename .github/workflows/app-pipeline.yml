@@ -76,10 +76,14 @@ jobs:
       - name: Amazon ECS task definition
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@97587c9d45a4930bf0e3da8dd2feb2a463cf4a3a
+        env:
+          ECR_REGISTRY: ${{ steps.aws-ecr-login.outputs.registry }}
+          ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY}}
+          ECR_IMAGE_TAG: ${{ env.IMAGE_TAG }}
         with:
           task-definition: ${{ env.AWS_ECS_TASK_DEFINITION }}
           container-name: ${{ env.APP_NAME }}
-          image: $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          image: $ECR_REGISTRY/$ECR_REPOSITORY:$ECR_IMAGE_TAG
       
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
