@@ -12,7 +12,7 @@ env:
   AWS_DEFAULT_REGION: ${{secrets.AWS_REGION}}
   AWS_ACCOUNT_ID: ${{secrets.AWS_ACCOUNT_ID}}
   AWS_ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY }}
-  AWS_ECS_TASK_DEFINITION: .aws/task-definition.json
+  AWS_ECS_TASK_DEFINITION: .github/workflows/task-definition.json
   
   #APP
   APP_NAME: springbootcloudwatch
@@ -75,7 +75,7 @@ jobs:
       
       - name: Amazon ECS task definition
         id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@97587c9d45a4930bf0e3da8dd2feb2a463cf4a3a
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
         env:
           ECR_REGISTRY: ${{ steps.aws-ecr-login.outputs.registry }}
           ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY}}
@@ -90,7 +90,8 @@ jobs:
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
           service: ${{ env.APP_NAME }}
-          cluster: springboot-cloudwatch-cluster 
+          cluster: springboot-cloudwatch-cluster
+          wait-for-service-stability: true
 
 
 
