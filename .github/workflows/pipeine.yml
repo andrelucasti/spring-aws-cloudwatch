@@ -42,7 +42,7 @@ jobs:
 
 
 
-  Build App:
+  buildApp:
     runs-on: ubuntu-20.04
     name: Building the App
     steps:
