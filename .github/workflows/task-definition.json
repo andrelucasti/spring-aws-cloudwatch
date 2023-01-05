@@ -1,22 +1,51 @@
 {
-  "taskDefinitionArn": "arn:aws:ecs:us-east-1:040335195619:task-definition/springcloudcloudwatchstackecsstackfargateecsstackTaskDef7E9316E0:5",
   "ipcMode": null,
+  "executionRoleArn": null,
   "containerDefinitions": [
     {
-      "name": "springbootcloudwatch",
+      "dnsSearchDomains": null,
+      "environmentFiles": null,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "wallet-trade-container",
+          "awslogs-region": "us-east-1",
+          "awslogs-create-group": "true",
+          "awslogs-stream-prefix": "wallet-trade"
+        }
+      },
+      "entryPoint": null,
       "portMappings": [
         {
-          "containerPort": 8929,
-          "hostPort": 8929,
-          "protocol": "tcp"
+          "hostPort": 9958,
+          "protocol": "tcp",
+          "containerPort": 9958
+        },
+        {
+          "hostPort": 8181,
+          "protocol": "tcp",
+          "containerPort": 8181
+        },
+        {
+          "hostPort": 8080,
+          "protocol": "tcp",
+          "containerPort": 8080
         }
       ],
+      "command": null,
       "linuxParameters": null,
       "cpu": 256,
+      "environment": [],
       "resourceRequirements": null,
+      "ulimits": null,
+      "dnsServers": null,
+      "mountPoints": [],
       "workingDirectory": null,
+      "secrets": null,
+      "dockerSecurityOptions": null,
       "memory": null,
       "memoryReservation": 512,
+      "volumesFrom": [],
       "stopTimeout": null,
       "image": null,
       "startTimeout": null,
@@ -25,85 +54,52 @@
       "disableNetworking": null,
       "interactive": null,
       "healthCheck": null,
+      "essential": true,
       "links": null,
       "hostname": null,
+      "extraHosts": null,
       "pseudoTerminal": null,
       "user": null,
       "readonlyRootFilesystem": null,
+      "dockerLabels": null,
+      "systemControls": null,
       "privileged": null,
-      "essential": true,
-      "entryPoint": [],
-      "command": [],
-      "environment": [],
-      "environmentFiles": [],
-      "mountPoints": [],
-      "volumesFrom": [],
-      "secrets": [],
-      "dnsServers": [],
-      "dnsSearchDomains": [],
-      "extraHosts": [],
-      "dockerSecurityOptions": [],
-      "dockerLabels": {},
-      "ulimits": [],
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "options": {
-          "awslogs-group": "springcloudcloudwatchstackecsstack515CC507-fargateecsstackTaskDefspringbootcloudwatchLogGroupEDB387BB-BaY110wYOoWA",
-          "awslogs-region": "us-east-1",
-          "awslogs-stream-prefix": "fargate-ecs-stack"
-        },
-        "secretOptions": []
-      },
-      "systemControls": []
-    }
-  ],
-  "family": "springcloudcloudwatchstackecsstackfargateecsstackTaskDef7E9316E0",
-  "taskRoleArn": "arn:aws:iam::040335195619:role/springcloudcloudwatchstac-fargateecsstackTaskDefTa-PAXO030ADLOM",
-  "executionRoleArn": "arn:aws:iam::040335195619:role/springcloudcloudwatchstac-fargateecsstackTaskDefEx-1EX2MVT3W7K6C",
-  "networkMode": "awsvpc",
-  "revision": 5,
-  "volumes": [],
-  "status": "ACTIVE",
-  "requiresAttributes": [
-    {
-      "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
-    },
-    {
-      "name": "ecs.capability.execution-role-awslogs"
-    },
-    {
-      "name": "com.amazonaws.ecs.capability.ecr-auth"
-    },
-    {
-      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
-    },
-    {
-      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.17"
-    },
-    {
-      "name": "com.amazonaws.ecs.capability.task-iam-role"
-    },
-    {
-      "name": "ecs.capability.execution-role-ecr-pull"
-    },
-    {
-      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
-    },
-    {
-      "name": "ecs.capability.task-eni"
+      "name": "wallet-trade"
     }
   ],
   "placementConstraints": [],
+  "memory": null,
+  "taskRoleArn": null,
   "compatibilities": [
-    "EC2",
-    "FARGATE"
+    "EXTERNAL",
+    "EC2"
   ],
+  "taskDefinitionArn": "arn:aws:ecs:us-east-1:575308843560:task-definition/wallet-trade-td:1",
+  "family": "wallet-trade-td",
+  "requiresAttributes": [
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
+      "name": "com.amazonaws.ecs.capability.ecr-auth"
+    },
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.21"
+    }
+  ],
+  "pidMode": null,
   "requiresCompatibilities": [
-    "FARGATE"
+    "EC2"
   ],
-  "cpu": "256",
-  "memory": "512",
-  "registeredAt": "2023-01-05T15:51:00.051Z",
-  "registeredBy": "arn:aws:sts::040335195619:assumed-role/cdk-hnb659fds-cfn-exec-role-040335195619-us-east-1/AWSCloudFormation",
-  "tags": []
+  "networkMode": null,
+  "runtimePlatform": null,
+  "cpu": null,
+  "revision": 1,
+  "status": "ACTIVE",
+  "inferenceAccelerators": null,
+  "proxyConfiguration": null,
+  "volumes": []
 }
