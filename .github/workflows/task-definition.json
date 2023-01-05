@@ -1,11 +1,9 @@
 {
   "taskDefinitionArn": "arn:aws:ecs:us-east-1:040335195619:task-definition/springcloudcloudwatchstackecsstackfargateecsstackTaskDef7E9316E0:5",
+  "ipcMode": null,
   "containerDefinitions": [
     {
       "name": "springbootcloudwatch",
-      "image": "040335195619.dkr.ecr.us-east-1.amazonaws.com/start-project-cloudwatch-logging:latest",
-      "cpu": 0,
-      "links": [],
       "portMappings": [
         {
           "containerPort": 8929,
@@ -13,6 +11,26 @@
           "protocol": "tcp"
         }
       ],
+      "linuxParameters": null,
+      "cpu": 256,
+      "resourceRequirements": null,
+      "workingDirectory": null,
+      "memory": null,
+      "memoryReservation": 512,
+      "stopTimeout": null,
+      "image": null,
+      "startTimeout": null,
+      "firelensConfiguration": null,
+      "dependsOn": null,
+      "disableNetworking": null,
+      "interactive": null,
+      "healthCheck": null,
+      "links": null,
+      "hostname": null,
+      "pseudoTerminal": null,
+      "user": null,
+      "readonlyRootFilesystem": null,
+      "privileged": null,
       "essential": true,
       "entryPoint": [],
       "command": [],
