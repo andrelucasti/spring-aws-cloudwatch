@@ -1,4 +1,4 @@
-name: Create the infrastructure in the AWS
+name: Build and Deploy APP
 
 on:
   push:
