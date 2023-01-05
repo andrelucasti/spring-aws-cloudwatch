@@ -33,7 +33,7 @@ public class ECRStack extends Stack {
 
         Repository.Builder.create(this, "ecr-repository-stack")
                 .repositoryName(repositoryName)
-                .imageTagMutability(TagMutability.MUTABLE)
+                .imageTagMutability(TagMutability.IMMUTABLE)
                 .lifecycleRules(Collections.singletonList(lifecycleRule))
                 .build();
     }
