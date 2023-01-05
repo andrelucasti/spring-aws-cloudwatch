@@ -8,6 +8,9 @@ WORKDIR /usr/src/app
 
 COPY --from=builder target/application.jar application.jar
 
+RUN ls
+RUN pwd
+
 EXPOSE 9958
 EXPOSE 8929
 EXPOSE 8080

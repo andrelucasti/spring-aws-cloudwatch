@@ -1,0 +1,36 @@
+name: Create the infrastructure in the AWS
+
+env:
+  AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+  AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+  AWS_DEFAULT_REGION: ${{secrets.AWS_REGION}}
+  AWS_ACCOUNT_ID: ${{secrets.AWS_ACCOUNT_ID}}
+  IMAGE_TAG: ${{ github.sha }}
+  ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY }}
+
+
+jobs:
+  infrastructure:
+    runs-on: ubuntu-20.04
+    name: Infrastructure - Bootstrap & Deploy CDK
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 19
+          cache: 'maven'
+
+      - name: Install aws cdk
+        run: npm install -g aws-cdk
+
+      - name: CDK bootstrap
+        working-directory: infrastructure
+        run: cdk bootstrap -c accountId=${{ env.AWS_ACCOUNT_ID }} -c region=${{ env.AWS_DEFAULT_REGION }}
+
+      - name: CDK deploy
+        working-directory: infrastructure
+        run: cdk deploy -c accountId=${{ env.AWS_ACCOUNT_ID }} -c region=${{ env.AWS_DEFAULT_REGION }} --require-approval never --all
