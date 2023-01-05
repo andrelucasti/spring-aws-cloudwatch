@@ -48,7 +48,7 @@ jobs:
           ECR_REGISTRY: ${{ steps.aws-ecr-login.outputs.registry }}
           ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY_WALLET_TRADE }}
           ECR_IMAGE_TAG: ${{ env.IMAGE_TAG }}
-        run: docker push $ECR_REGISTRY/$ECR_REPOSITORY:$ECR_IMAGE_TAG
+        run: docker push 040335195619.dkr.ecr.us-east-1.amazonaws.com/$ECR_REPOSITORY:$ECR_IMAGE_TAG
 
   Deploy:
     runs-on: ubuntu-20.04
