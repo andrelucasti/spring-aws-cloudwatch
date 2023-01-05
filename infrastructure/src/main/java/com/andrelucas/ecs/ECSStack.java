@@ -1,9 +1,18 @@
 package com.andrelucas.ecs;
 
+import software.amazon.awscdk.CfnResource;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.ec2.IMachineImage;
+import software.amazon.awscdk.services.ec2.InstanceClass;
+import software.amazon.awscdk.services.ec2.InstanceSize;
+import software.amazon.awscdk.services.ec2.InstanceType;
+import software.amazon.awscdk.services.ec2.MachineImage;
 import software.amazon.awscdk.services.ecr.IRepository;
 import software.amazon.awscdk.services.ecr.Repository;
+import software.amazon.awscdk.services.ecs.AddCapacityOptions;
+import software.amazon.awscdk.services.ecs.CfnCluster;
+import software.amazon.awscdk.services.ecs.Cluster;
 import software.amazon.awscdk.services.ecs.ContainerImage;
 import software.amazon.awscdk.services.ecs.EcrImage;
 import software.amazon.awscdk.services.ecs.patterns.ApplicationLoadBalancedFargateService;
@@ -25,6 +34,16 @@ public class ECSStack extends Stack {
     public void execute() {
         IRepository repository = Repository.fromRepositoryName(this, "ecr-ecs-stack", repositoryName);
         EcrImage ecrImage = ContainerImage.fromEcrRepository(repository);
+
+        AddCapacityOptions addCapacityOptions = AddCapacityOptions.builder()
+                .desiredCapacity(2)
+                .instanceType(InstanceType.of(InstanceClass.T2, InstanceSize.MICRO))
+                .machineImage(MachineImage.latestAmazonLinux())
+                .keyName("springboot-cloudwatch-cluster")
+                .allowAllOutbound(true)
+                .build();
+
+
         ApplicationLoadBalancedTaskImageOptions loadBalancedTaskImageOptions = ApplicationLoadBalancedTaskImageOptions
                 .builder()
                 .image(ecrImage)
@@ -34,8 +53,16 @@ public class ECSStack extends Stack {
                 .build();
 
 
+        Cluster cluster = Cluster.Builder.create(this, "ecs-cluster-stack")
+                .clusterName("springboot-cloudwatch-cluster")
+                .containerInsights(true)
+                .capacity(addCapacityOptions)
+                .enableFargateCapacityProviders(false)
+                .build();
+
         ApplicationLoadBalancedFargateService
                 .Builder.create(this, "fargate-ecs-stack")
+                .cluster(cluster)
                 .taskImageOptions(loadBalancedTaskImageOptions)
                 .publicLoadBalancer(true)
                 .serviceName("springboot-cloudwatch")
