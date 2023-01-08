@@ -58,45 +58,5 @@ jobs:
           ECR_IMAGE_TAG: ${{ env.IMAGE_TAG }}
         run: docker push $ECR_REGISTRY/$ECR_REPOSITORY:$ECR_IMAGE_TAG
 
-  Deploy:
-    runs-on: ubuntu-20.04
-    name: Deploy the App
-    needs:
-      - buildApp
-
-    steps:
-      - uses: actions/checkout@v3
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-
-      - name: ECR Login
-        id: aws-ecr-login
-        uses: aws-actions/amazon-ecr-login@v1
-
-      - name: Amazon ECS task definition
-        id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        env:
-          ECR_REGISTRY: ${{ steps.aws-ecr-login.outputs.registry }}
-          ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY}}
-          ECR_IMAGE_TAG: ${{ env.IMAGE_TAG }}
-        with:
-          task-definition: ${{ env.AWS_ECS_TASK_DEFINITION }}
-          container-name: ${{ env.APP_NAME }}
-          image: $ECR_REGISTRY/$ECR_REPOSITORY:$ECR_IMAGE_TAG
-      
-      - name: Deploy Amazon ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: ${{ env.APP_NAME }}
-          cluster: springboot-cloudwatch-cluster
-          wait-for-service-stability: true
-
-
 
 
