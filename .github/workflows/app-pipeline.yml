@@ -69,6 +69,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 19
+          cache: 'maven'
+
       - name: Install aws cdk
         run: npm install -g aws-cdk
 
