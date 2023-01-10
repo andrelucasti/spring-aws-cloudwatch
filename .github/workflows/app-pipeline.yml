@@ -70,4 +70,4 @@ jobs:
       - uses: actions/checkout@v3
       - name: Deploy app using cdk
         working-directory: infrastructure
-        run: cdk deploy -c accountId=${{ env.AWS_ACCOUNT_ID }} -c region=${{ env.AWS_DEFAULT_REGION }} -c imageTag=${{ steps.aws-ecr-login.outputs.registry }} --require-approval never spring-cloud-cloudwatch-stack/lb-stack
+        run: cdk deploy -c accountId=${{ env.AWS_ACCOUNT_ID }} -c region=${{ env.AWS_DEFAULT_REGION }} -c imageTag=${{ steps.aws-ecr-login.outputs.registry }} spring-cloud-cloudwatch-stack/lb-stack --require-approval never

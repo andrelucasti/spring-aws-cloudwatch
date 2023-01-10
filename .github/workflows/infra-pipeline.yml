@@ -37,8 +37,8 @@ jobs:
       - name: CDK deploy
         working-directory: infrastructure
         run: | 
-          cdk deploy -c accountId=${{ env.AWS_ACCOUNT_ID }} -c region=${{ env.AWS_DEFAULT_REGION }} --require-approval never spring-cloud-cloudwatch-stack/ecr-repository-stack
-          cdk deploy -c accountId=${{ env.AWS_ACCOUNT_ID }} -c region=${{ env.AWS_DEFAULT_REGION }} --require-approval never spring-cloud-cloudwatch-stack/vpc-stack
-          cdk deploy -c accountId=${{ env.AWS_ACCOUNT_ID }} -c region=${{ env.AWS_DEFAULT_REGION }} --require-approval never spring-cloud-cloudwatch-stack/cluster-stack
-          cdk deploy -c accountId=${{ env.AWS_ACCOUNT_ID }} -c region=${{ env.AWS_DEFAULT_REGION }} --require-approval never spring-cloud-cloudwatch-stack/lb-stack
+          cdk deploy -c accountId=${{ env.AWS_ACCOUNT_ID }} -c region=${{ env.AWS_DEFAULT_REGION }} spring-cloud-cloudwatch-stack/ecr-repository-stack --require-approval never 
+          cdk deploy -c accountId=${{ env.AWS_ACCOUNT_ID }} -c region=${{ env.AWS_DEFAULT_REGION }} spring-cloud-cloudwatch-stack/vpc-stack --require-approval never
+          cdk deploy -c accountId=${{ env.AWS_ACCOUNT_ID }} -c region=${{ env.AWS_DEFAULT_REGION }} spring-cloud-cloudwatch-stack/cluster-stack --require-approval never
+          cdk deploy -c accountId=${{ env.AWS_ACCOUNT_ID }} -c region=${{ env.AWS_DEFAULT_REGION }} spring-cloud-cloudwatch-stack/lb-stack --require-approval never
           
