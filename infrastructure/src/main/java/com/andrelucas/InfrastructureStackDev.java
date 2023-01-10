@@ -34,6 +34,5 @@ public class InfrastructureStackDev extends Stack {
                 loadBalancerStack.getApplicationLoadBalancerSecurityGroupId(),
                 loadBalancerStack.getHttpListener(), REPOSITORY_NAME, CLUSTER_NAME, SAND_ENV)
                 .create();
-
     }
 }

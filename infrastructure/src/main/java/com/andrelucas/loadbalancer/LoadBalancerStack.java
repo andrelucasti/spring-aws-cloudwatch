@@ -63,7 +63,7 @@ public class LoadBalancerStack extends Stack {
 
         IApplicationTargetGroup defaultAppTargetGroup = ApplicationTargetGroup.Builder.create(this, "defaultTargetGroup")
                 .vpc(vpc)
-                .port(8080)
+                .port(8929)
                 .protocol(ApplicationProtocol.HTTP)
                 .targetGroupName(environmentName.concat("-").concat("defaultTargetGroup"))
                 .targetType(TargetType.IP)

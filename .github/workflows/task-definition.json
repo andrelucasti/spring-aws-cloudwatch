@@ -1,52 +1,43 @@
 {
   "ipcMode": null,
-  "executionRoleArn": null,
+  "executionRoleArn": "arn:aws:iam::040335195619:role/springcloudcloudwatchstac-ecsTaskExecutionRole34F5-1O9Q8551DBSJQ",
   "containerDefinitions": [
     {
-      "dnsSearchDomains": null,
-      "environmentFiles": null,
+      "dnsSearchDomains": [],
+      "environmentFiles": [],
       "logConfiguration": {
         "logDriver": "awslogs",
+        "secretOptions": [],
         "options": {
-          "awslogs-group": "wallet-trade-container",
+          "awslogs-group": "sandbox-springboot-cloudwatch-cluster-logs",
+          "awslogs-datetime-format": "%Y-%m-%dT%H:%M:%S.%f%z",
           "awslogs-region": "us-east-1",
-          "awslogs-create-group": "true",
-          "awslogs-stream-prefix": "wallet-trade"
+          "awslogs-stream-prefix": "stream-sandboxspringbootcloudwatch"
         }
       },
-      "entryPoint": null,
+      "entryPoint": [],
       "portMappings": [
         {
-          "hostPort": 9958,
+          "hostPort": 8929,
           "protocol": "tcp",
-          "containerPort": 9958
-        },
-        {
-          "hostPort": 8181,
-          "protocol": "tcp",
-          "containerPort": 8181
-        },
-        {
-          "hostPort": 8080,
-          "protocol": "tcp",
-          "containerPort": 8080
+          "containerPort": 8929
         }
       ],
-      "command": null,
+      "command": [],
       "linuxParameters": null,
       "cpu": 256,
       "environment": [],
       "resourceRequirements": null,
-      "ulimits": null,
-      "dnsServers": null,
+      "ulimits": [],
+      "dnsServers": [],
       "mountPoints": [],
       "workingDirectory": null,
-      "secrets": null,
-      "dockerSecurityOptions": null,
-      "memory": null,
-      "memoryReservation": 512,
+      "secrets": [],
+      "dockerSecurityOptions": [],
+      "memory": 1024,
+      "memoryReservation": null,
       "volumesFrom": [],
-      "stopTimeout": null,
+      "stopTimeout": 2,
       "image": null,
       "startTimeout": null,
       "firelensConfiguration": null,
@@ -55,28 +46,40 @@
       "interactive": null,
       "healthCheck": null,
       "essential": true,
-      "links": null,
+      "links": [],
       "hostname": null,
-      "extraHosts": null,
+      "extraHosts": [],
       "pseudoTerminal": null,
       "user": null,
       "readonlyRootFilesystem": null,
-      "dockerLabels": null,
-      "systemControls": null,
+      "dockerLabels": {},
+      "systemControls": [],
       "privileged": null,
-      "name": "wallet-trade"
+      "name": "sandbox-springbootcloudwatch"
     }
   ],
   "placementConstraints": [],
-  "memory": null,
-  "taskRoleArn": null,
+  "memory": "1024",
+  "taskRoleArn": "arn:aws:iam::040335195619:role/springcloudcloudwatchstackecss-ecsTaskRole6DC9E3C7-1MW88B93BQL7T",
   "compatibilities": [
-    "EXTERNAL",
-    "EC2"
+    "EC2",
+    "FARGATE"
   ],
-  "taskDefinitionArn": "arn:aws:ecs:us-east-1:575308843560:task-definition/wallet-trade-td:1",
-  "family": "wallet-trade-td",
+  "taskDefinitionArn": "arn:aws:ecs:us-east-1:040335195619:task-definition/springcloudcloudwatchstackecsstack515CC507-taskDefinition-79BaDuFLP0jd:1",
+  "family": "springcloudcloudwatchstackecsstack515CC507-taskDefinition-79BaDuFLP0jd",
   "requiresAttributes": [
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
+      "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+    },
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
+      "name": "ecs.capability.execution-role-awslogs"
+    },
     {
       "targetId": null,
       "targetType": null,
@@ -87,16 +90,58 @@
       "targetId": null,
       "targetType": null,
       "value": null,
-      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.21"
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+    },
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.17"
+    },
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.30"
+    },
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
+      "name": "com.amazonaws.ecs.capability.task-iam-role"
+    },
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
+      "name": "ecs.capability.container-ordering"
+    },
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
+      "name": "ecs.capability.execution-role-ecr-pull"
+    },
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+    },
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
+      "name": "ecs.capability.task-eni"
     }
   ],
   "pidMode": null,
   "requiresCompatibilities": [
-    "EC2"
+    "FARGATE"
   ],
-  "networkMode": null,
+  "networkMode": "awsvpc",
   "runtimePlatform": null,
-  "cpu": null,
+  "cpu": "256",
   "revision": 1,
   "status": "ACTIVE",
   "inferenceAccelerators": null,

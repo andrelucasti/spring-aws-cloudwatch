@@ -1,5 +1,6 @@
 package com.andrelucas.ecs;
 
+import org.jetbrains.annotations.Nullable;
 import software.amazon.awscdk.RemovalPolicy;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
@@ -31,7 +32,6 @@ import java.util.Map;
 public class ECSStack extends Stack {
 
     private static final String APP_NAME = "springbootcloudwatch";
-    private static final String KEY_NAME = "springboot-cloudwatch-cluster";
     private static final String DATE_FORMAT = "%Y-%m-%dT%H:%M:%S.%f%z";
     private static final Number TASK_DEF_CPU = 256;
     private static final Number TASK_DEF_MEMORY = 1024;
@@ -41,6 +41,7 @@ public class ECSStack extends Stack {
     private final SecurityGroup lbSecurityGroup;
     private final IApplicationListener httpListener;
     private final String repositoryName;
+    private final String imageTag;
     private final String clusterName;
     private final String environmentName;
     public ECSStack(final Construct scope,
@@ -60,10 +61,18 @@ public class ECSStack extends Stack {
         this.repositoryName = repositoryName;
         this.clusterName = clusterName;
         this.environmentName = environmentName;
+
+        this.imageTag = getImageTag(scope);
+    }
+
+
+    private static String getImageTag(Construct scope) {
+        return scope.getNode().tryGetContext("imageTag") == null ? "latest" : (String) scope.getNode().tryGetContext("imageTag");
     }
 
     public void create() {
         IRepository repository = Repository.fromRepositoryName(this, "ecr-ecs-stack", repositoryName);
+
 
         CfnTargetGroup cfnTargetGroup = CfnTargetGroup.Builder.create(this, "targetGroup")
                 .healthCheckIntervalSeconds(30)
@@ -137,7 +146,8 @@ public class ECSStack extends Stack {
                 .name(environmentName.concat("-").concat(APP_NAME))
                 .cpu(TASK_DEF_CPU)
                 .memory(TASK_DEF_MEMORY)
-                .image(repository.getRepositoryUri())
+                .image(repository.repositoryUriForTagOrDigest(imageTag))
+                //.image("https://040335195619.dkr.ecr.us-east-1.amazonaws.com/start-project-cloudwatch-logging:a262e3201053da6bcee9541b424884166a1db493")
                 .logConfiguration(CfnTaskDefinition.LogConfigurationProperty.builder()
                         .logDriver("awslogs")
                         .options(Map.of(
