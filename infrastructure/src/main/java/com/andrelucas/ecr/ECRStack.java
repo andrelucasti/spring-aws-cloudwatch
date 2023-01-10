@@ -1,6 +1,5 @@
 package com.andrelucas.ecr;
 
-import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.ecr.LifecycleRule;
@@ -23,7 +22,7 @@ public class ECRStack extends Stack {
         this.repositoryName = repositoryName;
     }
 
-    public void execute(){
+    public void create(){
         LifecycleRule lifecycleRule = LifecycleRule.builder()
                 .tagStatus(TagStatus.UNTAGGED)
                 .description("Repository to medium post")

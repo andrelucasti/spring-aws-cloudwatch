@@ -12,9 +12,6 @@ import software.amazon.awscdk.services.ecr.IRepository;
 import software.amazon.awscdk.services.ecr.Repository;
 import software.amazon.awscdk.services.ecs.CfnService;
 import software.amazon.awscdk.services.ecs.CfnTaskDefinition;
-import software.amazon.awscdk.services.ecs.Cluster;
-import software.amazon.awscdk.services.ecs.ContainerImage;
-import software.amazon.awscdk.services.ecs.EcrImage;
 import software.amazon.awscdk.services.elasticloadbalancingv2.CfnListenerRule;
 import software.amazon.awscdk.services.elasticloadbalancingv2.CfnTargetGroup;
 import software.amazon.awscdk.services.elasticloadbalancingv2.IApplicationListener;
@@ -65,12 +62,8 @@ public class ECSStack extends Stack {
         this.environmentName = environmentName;
     }
 
-    public void execute() {
+    public void create() {
         IRepository repository = Repository.fromRepositoryName(this, "ecr-ecs-stack", repositoryName);
-        Cluster.Builder.create(this, "cluster")
-                .vpc(vpc)
-                .clusterName(environmentName.concat("-").concat(clusterName))
-                .build();
 
         CfnTargetGroup cfnTargetGroup = CfnTargetGroup.Builder.create(this, "targetGroup")
                 .healthCheckIntervalSeconds(30)
@@ -170,16 +163,17 @@ public class ECSStack extends Stack {
                 .containerDefinitions(Collections.singletonList(container))
                 .build();
 
-        CfnSecurityGroup ecsSecurityGroup = CfnSecurityGroup.Builder
-                .create(this, "ecsSecurityGroup")
+        CfnSecurityGroup ecsSecurityGroup = CfnSecurityGroup.Builder.create(this, "ecsSecurityGroup")
+                .groupName("ecsSecurityGroup")
                 .vpcId(vpc.getVpcId())
                 .groupDescription("SecurityGroup for the ECS containers")
                 .build();
 
         CfnSecurityGroupIngress.Builder.create(this, "ecsIngressFromSelf")
-                .ipProtocol("-1")
+
                 .sourceSecurityGroupId(ecsSecurityGroup.getAttrGroupId())
                 .groupId(ecsSecurityGroup.getAttrGroupId())
+                .ipProtocol("-1")
                 .build();
 
             CfnSecurityGroupIngress.Builder.create(this, "ecsIngressFromLoadbalancer")
@@ -189,7 +183,7 @@ public class ECSStack extends Stack {
                 .build();
 
         CfnService ecsService = CfnService.Builder.create(this, "ecsService")
-                .cluster(clusterName)
+                .cluster(environmentName.concat("-").concat(clusterName))
                 .launchType("FARGATE")
                 .deploymentConfiguration(CfnService.DeploymentConfigurationProperty.builder()
                         .maximumPercent(100)
@@ -197,9 +191,9 @@ public class ECSStack extends Stack {
                         .build())
                 .desiredCount(2)
                 .taskDefinition(taskDefinition.getRef())
-                .serviceName(APP_NAME)
+                .serviceName(environmentName.concat("-").concat(APP_NAME))
                 .loadBalancers(Collections.singletonList(CfnService.LoadBalancerProperty.builder()
-                                .containerName(APP_NAME)
+                                .containerName(environmentName.concat("-").concat(APP_NAME))
                                 .containerPort(CONTAINER_PORT)
                                 .targetGroupArn(cfnTargetGroup.getRef())
                         .build()))

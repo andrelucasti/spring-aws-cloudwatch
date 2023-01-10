@@ -49,7 +49,6 @@ public class LoadBalancerStack extends Stack {
                 .build();
 
         CfnSecurityGroupIngress.Builder.create(this, "ingressToLoadBalancer")
-                .groupName("")
                 .groupId(securityGroup.getSecurityGroupId())
                 .cidrIp("0.0.0.0/0")
                 .ipProtocol("-1")
@@ -75,7 +74,6 @@ public class LoadBalancerStack extends Stack {
                         .timeout(Duration.seconds(5))
                         .build())
                 .build();
-
 
         ApplicationListener httpListener = applicationLoadBalancer.addListener("httpListener",
                 BaseApplicationListenerProps.builder()

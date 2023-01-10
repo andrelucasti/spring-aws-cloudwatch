@@ -2,14 +2,13 @@ package com.andrelucas;
 
 import com.andrelucas.ecr.ECRStack;
 import com.andrelucas.ecs.ECSStack;
+import com.andrelucas.ecs.cluster.ClusterStack;
 import com.andrelucas.loadbalancer.LoadBalancerStack;
 import com.andrelucas.vpc.VPCStack;
 import software.amazon.awscdk.services.ec2.Vpc;
 import software.constructs.Construct;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
-// import software.amazon.awscdk.Duration;
-// import software.amazon.awscdk.services.sqs.Queue;
 
 public class InfrastructureStackDev extends Stack {
     private static final String SAND_ENV = "sandbox";
@@ -20,17 +19,21 @@ public class InfrastructureStackDev extends Stack {
         super(scope, id, props);
 
         new ECRStack(this, "ecr-repository-stack", props, REPOSITORY_NAME)
-                .execute();
+                .create();
 
-
-        VPCStack vpcStack = new VPCStack(this, "vpc-stack", props, SAND_ENV, "spring-boot-cloudwatch-vpc");
+        VPCStack vpcStack = new VPCStack(this, "vpc-stack", props, SAND_ENV, "cloudwatch-vpc");
         Vpc vpc = vpcStack.create();
 
-        LoadBalancerStack loadBalancerStack = new LoadBalancerStack(this, "lb-stack", props, vpc, "spring-boot-cloudwatch-lb", SAND_ENV);
+        LoadBalancerStack loadBalancerStack = new LoadBalancerStack(this, "lb-stack", props, vpc, "load-balancer", SAND_ENV);
         loadBalancerStack.create();
 
-        new ECSStack(this, "ecs-stack", props, vpc, loadBalancerStack.getApplicationLoadBalancerSecurityGroupId(), loadBalancerStack.getHttpListener(), REPOSITORY_NAME, CLUSTER_NAME, SAND_ENV)
-                .execute();
+        new ClusterStack(this, "cluster-stack", props, SAND_ENV, vpc, CLUSTER_NAME)
+                .create();
+
+        new ECSStack(this, "ecs-stack", props, vpc,
+                loadBalancerStack.getApplicationLoadBalancerSecurityGroupId(),
+                loadBalancerStack.getHttpListener(), REPOSITORY_NAME, CLUSTER_NAME, SAND_ENV)
+                .create();
 
     }
 }

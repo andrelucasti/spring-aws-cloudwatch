@@ -9,8 +9,6 @@ import software.amazon.awscdk.assertions.Template;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class ECRStackTest {
 
     @Test
@@ -19,7 +17,7 @@ class ECRStackTest {
         var stackProps = StackProps.builder().env(getEnv("000000000000", "us-east-1"))
                 .build();
         var ecrStack = new ECRStack(app, "stackName", stackProps, "start-project-cloudwatch-logging");
-        ecrStack.execute();
+        ecrStack.create();
 
         var template = Template.fromStack(ecrStack);
         template.hasResourceProperties("AWS::ECR::Repository", Map.of(
