@@ -77,8 +77,17 @@ jobs:
           cache: 'maven'
 
       - name: Install aws cdk
-        run: npm install -g aws-cdk
+        working-directory: infrastructure
+        run: npm install
+        with:
+          cache: 'npm'
 
       - name: Deploy app using cdk
         working-directory: infrastructure
-        run: cdk deploy -c accountId=${{ env.AWS_ACCOUNT_ID }} -c region=${{ env.AWS_DEFAULT_REGION }} -c imageTag=${{ env.IMAGE_TAG }} spring-cloud-cloudwatch-stack/ecs-stack --require-approval never
+        with:
+          cache: 'npm'
+        run: |
+          npm run service:deploy -- \ 
+            -c accountId=${{ env.AWS_ACCOUNT_ID }} \
+            -c region=${{ env.AWS_DEFAULT_REGION }} \
+            -c imageTag=${{ env.IMAGE_TAG }} spring-cloud-cloudwatch-stack/ecs-stack --require-approval never
