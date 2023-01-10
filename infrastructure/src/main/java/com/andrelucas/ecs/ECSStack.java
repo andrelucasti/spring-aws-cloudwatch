@@ -147,7 +147,6 @@ public class ECSStack extends Stack {
                 .cpu(TASK_DEF_CPU)
                 .memory(TASK_DEF_MEMORY)
                 .image(repository.repositoryUriForTagOrDigest(imageTag))
-                //.image("https://040335195619.dkr.ecr.us-east-1.amazonaws.com/start-project-cloudwatch-logging:a262e3201053da6bcee9541b424884166a1db493")
                 .logConfiguration(CfnTaskDefinition.LogConfigurationProperty.builder()
                         .logDriver("awslogs")
                         .options(Map.of(
