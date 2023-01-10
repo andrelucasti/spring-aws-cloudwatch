@@ -79,13 +79,10 @@ jobs:
       - name: Install aws cdk
         working-directory: infrastructure
         run: npm install
-        with:
-          cache: 'npm'
 
       - name: Deploy app using cdk
         working-directory: infrastructure
-        with:
-          cache: 'npm'
+        
         run: |
           npm run service:deploy -- \ 
             -c accountId=${{ env.AWS_ACCOUNT_ID }} \
